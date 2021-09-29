@@ -340,7 +340,7 @@ namespace OneDriveApiBrowser
                 {
                     // Since the ItemWithPath method is available only at Drive.Root, we need to strip
                     // /drive/root: (12 characters) from the parent path string.
-                    string folderPath = targetFolder.ParentReference == null
+                    string folderPath = targetFolder.ParentReference?.Path == null
                         ? ""
                         : targetFolder.ParentReference.Path.Remove(0, 12) + "/" + Uri.EscapeUriString(targetFolder.Name);
                     var uploadPath = folderPath + "/" + Uri.EscapeUriString(System.IO.Path.GetFileName(filename));
