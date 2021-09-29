@@ -72,23 +72,19 @@ public static string[] Scopes = { "Files.ReadWrite.All" };
         {
             if (graphClient == null)
             {
-                // Create Microsoft Graph client.
                 try
                 {
-                    graphClient = new GraphServiceClient(
-                        "https://graph.microsoft.com/v1.0",
-                        new DelegateAuthenticationProvider(
-                            async (requestMessage) =>
-                            {
-                                var token = await GetTokenForUserAsync();
-                                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-                                // This header has been added to identify our sample in the Microsoft Graph service.  If extracting this code for your project please remove.
-                                requestMessage.Headers.Add("SampleID", "uwp-csharp-apibrowser-sample");
-
-                            }));
-                    return graphClient;
+                    string tenant = "common";
+                    InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions
+                    {
+                        TenantId = tenant,
+                        ClientId = clientId,
+                        AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+                        RedirectUri = new Uri("http://localhost"),
+                    };
+                    InteractiveBrowserCredential credential = new InteractiveBrowserCredential(options);
+                    graphClient = new GraphServiceClient(credential, Scopes);
                 }
-
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Could not create a graph client: " + ex.Message);
@@ -96,7 +92,7 @@ public static string[] Scopes = { "Files.ReadWrite.All" };
             }
 
             return graphClient;
-        } 
+        }
 ...
 ```
 
@@ -110,8 +106,7 @@ The **AuthenticationHelper.cs** file also provides a **SignOutAsync** method to 
                 user.SignOut();
             }
             graphClient = null;
-            TokenForUser = null;
-
+            // TokenForUser = null;
         }
 ```
 
