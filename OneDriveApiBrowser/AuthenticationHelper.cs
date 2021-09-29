@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using Azure.Identity;
 using Microsoft.Graph;
-using Microsoft.Identity.Client;
 
 namespace OneDriveApiBrowser
 {
     public class AuthenticationHelper
     {
         // The Client ID is used by the application to uniquely identify itself to the v2.0 authentication endpoint.
-        static string clientId = FormBrowser.MsaClientId;
-        public static string[] Scopes = { "Files.ReadWrite.All" };
+        static readonly string clientId = FormBrowser.MsaClientId;
+        private static readonly string[] Scopes = { "Files.ReadWrite.All" };
 
-        public static PublicClientApplication IdentityClientApp = new PublicClientApplication(clientId);
-
-        public static string TokenForUser = null;
         public static DateTimeOffset Expiration;
 
         private static GraphServiceClient graphClient = null;
@@ -27,23 +21,19 @@ namespace OneDriveApiBrowser
         {
             if (graphClient == null)
             {
-                // Create Microsoft Graph client.
                 try
                 {
-                    graphClient = new GraphServiceClient(
-                        "https://graph.microsoft.com/v1.0",
-                        new DelegateAuthenticationProvider(
-                            async (requestMessage) =>
-                            {
-                                var token = await GetTokenForUserAsync();
-                                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-                                // This header has been added to identify our sample in the Microsoft Graph service.  If extracting this code for your project please remove.
-                                requestMessage.Headers.Add("SampleID", "uwp-csharp-apibrowser-sample");
-
-                            }));
-                    return graphClient;
+                    string tenant = "common";
+                    InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions
+                    {
+                        TenantId = tenant,
+                        ClientId = clientId,
+                        AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+                        RedirectUri = new Uri("http://localhost"),
+                    };
+                    InteractiveBrowserCredential credential = new InteractiveBrowserCredential(options);
+                    graphClient = new GraphServiceClient(credential, Scopes);
                 }
-
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Could not create a graph client: " + ex.Message);
@@ -53,47 +43,16 @@ namespace OneDriveApiBrowser
             return graphClient;
         }
 
-
-        /// <summary>
-        /// Get Token for User.
-        /// </summary>
-        /// <returns>Token for user.</returns>
-        public static async Task<string> GetTokenForUserAsync()
-        {
-            AuthenticationResult authResult;
-            try
-            {
-                authResult = await IdentityClientApp.AcquireTokenSilentAsync(Scopes);
-                TokenForUser = authResult.Token;
-            }
-
-            catch (Exception)
-            {
-                if (TokenForUser == null || Expiration <= DateTimeOffset.UtcNow.AddMinutes(5))
-                {
-                    authResult = await IdentityClientApp.AcquireTokenAsync(Scopes);
-
-                    TokenForUser = authResult.Token;
-                    Expiration = authResult.ExpiresOn;
-                }
-            }
-
-            return TokenForUser;
-        }
-
         /// <summary>
         /// Signs the user out of the service.
         /// </summary>
         public static void SignOut()
         {
-            foreach (var user in IdentityClientApp.Users)
-            {
-                user.SignOut();
-            }
+            //foreach (var user in IdentityClientApp.Users)
+            //{
+            //    user.SignOut();
+            //}
             graphClient = null;
-            TokenForUser = null;
-
         }
-
     }
 }
