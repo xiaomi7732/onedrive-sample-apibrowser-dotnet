@@ -44,55 +44,53 @@
             // 
             // propertyGridBrowser
             // 
-            this.propertyGridBrowser.Location = new System.Drawing.Point(15, 278);
-            this.propertyGridBrowser.Margin = new System.Windows.Forms.Padding(2);
+            this.propertyGridBrowser.Location = new System.Drawing.Point(22, 428);
             this.propertyGridBrowser.Name = "propertyGridBrowser";
             this.propertyGridBrowser.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.propertyGridBrowser.Size = new System.Drawing.Size(211, 84);
+            this.propertyGridBrowser.Size = new System.Drawing.Size(316, 129);
             this.propertyGridBrowser.TabIndex = 11;
             this.propertyGridBrowser.ToolbarVisible = false;
             this.propertyGridBrowser.Visible = false;
             // 
             // textBoxRawJson
             // 
-            this.textBoxRawJson.Location = new System.Drawing.Point(15, 165);
-            this.textBoxRawJson.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxRawJson.Location = new System.Drawing.Point(22, 254);
             this.textBoxRawJson.Multiline = true;
             this.textBoxRawJson.Name = "textBoxRawJson";
             this.textBoxRawJson.ReadOnly = true;
             this.textBoxRawJson.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxRawJson.Size = new System.Drawing.Size(213, 109);
+            this.textBoxRawJson.Size = new System.Drawing.Size(318, 166);
             this.textBoxRawJson.TabIndex = 10;
             this.textBoxRawJson.Visible = false;
             // 
             // treeViewProperties
             // 
             this.treeViewProperties.ContextMenuStrip = this.contextMenuStripProperty;
-            this.treeViewProperties.Location = new System.Drawing.Point(15, 36);
-            this.treeViewProperties.Margin = new System.Windows.Forms.Padding(2);
+            this.treeViewProperties.Location = new System.Drawing.Point(22, 55);
             this.treeViewProperties.Name = "treeViewProperties";
-            this.treeViewProperties.Size = new System.Drawing.Size(213, 126);
+            this.treeViewProperties.Size = new System.Drawing.Size(318, 192);
             this.treeViewProperties.TabIndex = 8;
             // 
             // contextMenuStripProperty
             // 
+            this.contextMenuStripProperty.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStripProperty.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyValueToolStripMenuItem,
             this.copyRowToolStripMenuItem});
             this.contextMenuStripProperty.Name = "contextMenuStripProperty";
-            this.contextMenuStripProperty.Size = new System.Drawing.Size(134, 48);
+            this.contextMenuStripProperty.Size = new System.Drawing.Size(174, 68);
             // 
             // copyValueToolStripMenuItem
             // 
             this.copyValueToolStripMenuItem.Name = "copyValueToolStripMenuItem";
-            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(173, 32);
             this.copyValueToolStripMenuItem.Text = "Copy Value";
             this.copyValueToolStripMenuItem.Click += new System.EventHandler(this.copyValueToolStripMenuItem_Click);
             // 
             // copyRowToolStripMenuItem
             // 
             this.copyRowToolStripMenuItem.Name = "copyRowToolStripMenuItem";
-            this.copyRowToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.copyRowToolStripMenuItem.Size = new System.Drawing.Size(173, 32);
             this.copyRowToolStripMenuItem.Text = "Copy Row";
             this.copyRowToolStripMenuItem.Click += new System.EventHandler(this.copyRowToolStripMenuItem_Click);
             // 
@@ -102,9 +100,8 @@
             this.panel2.Controls.Add(this.labelSelectedItemProperties);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(468, 21);
+            this.panel2.Size = new System.Drawing.Size(702, 32);
             this.panel2.TabIndex = 9;
             // 
             // comboBoxPropertyFormat
@@ -116,10 +113,9 @@
             "JSON",
             "TreeView",
             "Object Model"});
-            this.comboBoxPropertyFormat.Location = new System.Drawing.Point(379, 0);
-            this.comboBoxPropertyFormat.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxPropertyFormat.Location = new System.Drawing.Point(568, 0);
             this.comboBoxPropertyFormat.Name = "comboBoxPropertyFormat";
-            this.comboBoxPropertyFormat.Size = new System.Drawing.Size(90, 21);
+            this.comboBoxPropertyFormat.Size = new System.Drawing.Size(133, 28);
             this.comboBoxPropertyFormat.TabIndex = 5;
             this.comboBoxPropertyFormat.SelectedIndexChanged += new System.EventHandler(this.comboBoxPropertyFormat_SelectedIndexChanged);
             // 
@@ -128,23 +124,21 @@
             this.labelSelectedItemProperties.AutoSize = true;
             this.labelSelectedItemProperties.Dock = System.Windows.Forms.DockStyle.Top;
             this.labelSelectedItemProperties.Location = new System.Drawing.Point(0, 0);
-            this.labelSelectedItemProperties.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelSelectedItemProperties.Name = "labelSelectedItemProperties";
-            this.labelSelectedItemProperties.Size = new System.Drawing.Size(125, 13);
+            this.labelSelectedItemProperties.Size = new System.Drawing.Size(188, 20);
             this.labelSelectedItemProperties.TabIndex = 4;
             this.labelSelectedItemProperties.Text = "Selected Item Properties:";
             // 
             // OneDriveObjectBrowser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.propertyGridBrowser);
             this.Controls.Add(this.textBoxRawJson);
             this.Controls.Add(this.treeViewProperties);
             this.Controls.Add(this.panel2);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "OneDriveObjectBrowser";
-            this.Size = new System.Drawing.Size(468, 372);
+            this.Size = new System.Drawing.Size(702, 572);
             this.contextMenuStripProperty.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
