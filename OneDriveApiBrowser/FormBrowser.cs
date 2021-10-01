@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace OneDriveApiBrowser
 {
@@ -522,6 +523,48 @@ namespace OneDriveApiBrowser
                     await LoadFolderFromId(item.Id).ConfigureAwait(false);
                 }
             });
+        }
+
+        private async void checkOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (SelectedItem is null)
+                {
+                    MessageBox.Show("No selected file!");
+                }
+
+                //await graphClient.Drive.Items[SelectedItem.Id].Checkout().Request().PostAsync();
+                await graphClient.Drives[SelectedItem.ParentReference.DriveId].Items[SelectedItem.Id].Checkout().Request().PostAsync();
+                // await graphClient.Me.Drive.Items[SelectedItem.Id].Checkout().Request().PostAsync();
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Unexpected error: " + ex.Message);
+                });
+            }
+        }
+
+        private async void checkInToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (SelectedItem is null)
+                {
+                    MessageBox.Show("No selected file!");
+                }
+
+                await graphClient.Me.Drive.Items[SelectedItem.Id].Checkin().Request().PostAsync();
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Unexpected error: " + ex.Message);
+                });
+            }
         }
     }
 }

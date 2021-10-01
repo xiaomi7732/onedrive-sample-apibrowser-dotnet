@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanelBreadcrumb = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabelOneDriveRoot = new System.Windows.Forms.LinkLabel();
+            this.objectBrowser = new OneDriveApiBrowser.OneDriveObjectBrowser();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,9 @@
             this.bITSParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFromOneDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadToOneDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.objectBrowser = new OneDriveApiBrowser.OneDriveObjectBrowser();
+            this.selectedItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -115,6 +118,17 @@
             this.linkLabelOneDriveRoot.Text = "OneDrive";
             this.linkLabelOneDriveRoot.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelBreadcrumb_LinkClicked);
             // 
+            // objectBrowser
+            // 
+            this.objectBrowser.DisplayFormat = OneDriveApiBrowser.PropertyDisplayFormat.TreeNode;
+            this.objectBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.objectBrowser.Location = new System.Drawing.Point(0, 0);
+            this.objectBrowser.Name = "objectBrowser";
+            this.objectBrowser.Padding = new System.Windows.Forms.Padding(0, 9, 0, 0);
+            this.objectBrowser.SelectedItem = null;
+            this.objectBrowser.Size = new System.Drawing.Size(478, 691);
+            this.objectBrowser.TabIndex = 0;
+            // 
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -134,7 +148,8 @@
             this.fileToolStripMenuItem,
             this.uploadFileToolStripMenuItem,
             this.downloadToolStripMenuItem,
-            this.goToAppFolderToolStripMenuItem});
+            this.goToAppFolderToolStripMenuItem,
+            this.selectedItemToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 9);
@@ -253,7 +268,7 @@
             // saveSelectedFileToolStripMenuItem
             // 
             this.saveSelectedFileToolStripMenuItem.Name = "saveSelectedFileToolStripMenuItem";
-            this.saveSelectedFileToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveSelectedFileToolStripMenuItem.Size = new System.Drawing.Size(265, 34);
             this.saveSelectedFileToolStripMenuItem.Text = "Save Selected File...";
             this.saveSelectedFileToolStripMenuItem.Click += new System.EventHandler(this.saveSelectedFileToolStripMenuItem_Click);
             // 
@@ -290,16 +305,28 @@
             this.uploadToOneDriveToolStripMenuItem.Name = "uploadToOneDriveToolStripMenuItem";
             this.uploadToOneDriveToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // objectBrowser
+            // selectedItemToolStripMenuItem
             // 
-            this.objectBrowser.DisplayFormat = OneDriveApiBrowser.PropertyDisplayFormat.TreeNode;
-            this.objectBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.objectBrowser.Location = new System.Drawing.Point(0, 0);
-            this.objectBrowser.Name = "objectBrowser";
-            this.objectBrowser.Padding = new System.Windows.Forms.Padding(0, 9, 0, 0);
-            this.objectBrowser.SelectedItem = null;
-            this.objectBrowser.Size = new System.Drawing.Size(478, 691);
-            this.objectBrowser.TabIndex = 0;
+            this.selectedItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkOutToolStripMenuItem,
+            this.checkInToolStripMenuItem});
+            this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
+            this.selectedItemToolStripMenuItem.Size = new System.Drawing.Size(135, 29);
+            this.selectedItemToolStripMenuItem.Text = "&Selected Item";
+            // 
+            // checkOutToolStripMenuItem
+            // 
+            this.checkOutToolStripMenuItem.Name = "checkOutToolStripMenuItem";
+            this.checkOutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.checkOutToolStripMenuItem.Text = "Check &Out";
+            this.checkOutToolStripMenuItem.Click += new System.EventHandler(this.checkOutToolStripMenuItem_Click);
+            // 
+            // checkInToolStripMenuItem
+            // 
+            this.checkInToolStripMenuItem.Name = "checkInToolStripMenuItem";
+            this.checkInToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.checkInToolStripMenuItem.Text = "Check &In";
+            this.checkInToolStripMenuItem.Click += new System.EventHandler(this.checkInToolStripMenuItem_Click);
             // 
             // FormBrowser
             // 
@@ -355,6 +382,9 @@
         private System.Windows.Forms.ToolStripMenuItem downloadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveSelectedFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem goToAppFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectedItemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkInToolStripMenuItem;
     }
 }
 
