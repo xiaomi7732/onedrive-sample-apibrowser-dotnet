@@ -32,7 +32,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanelBreadcrumb = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabelOneDriveRoot = new System.Windows.Forms.LinkLabel();
-            this.objectBrowser = new OneDriveApiBrowser.OneDriveObjectBrowser();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,14 +50,16 @@
             this.downloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSelectedFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToAppFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectedItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.signInAadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chunkedUploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bITSParallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFromOneDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadToOneDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectedItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uploadAsLargeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectBrowser = new OneDriveApiBrowser.OneDriveObjectBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -118,17 +119,6 @@
             this.linkLabelOneDriveRoot.Text = "OneDrive";
             this.linkLabelOneDriveRoot.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelBreadcrumb_LinkClicked);
             // 
-            // objectBrowser
-            // 
-            this.objectBrowser.DisplayFormat = OneDriveApiBrowser.PropertyDisplayFormat.TreeNode;
-            this.objectBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.objectBrowser.Location = new System.Drawing.Point(0, 0);
-            this.objectBrowser.Name = "objectBrowser";
-            this.objectBrowser.Padding = new System.Windows.Forms.Padding(0, 9, 0, 0);
-            this.objectBrowser.SelectedItem = null;
-            this.objectBrowser.Size = new System.Drawing.Size(478, 691);
-            this.objectBrowser.TabIndex = 0;
-            // 
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -147,9 +137,9 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.uploadFileToolStripMenuItem,
+            this.selectedItemToolStripMenuItem,
             this.downloadToolStripMenuItem,
-            this.goToAppFolderToolStripMenuItem,
-            this.selectedItemToolStripMenuItem});
+            this.goToAppFolderToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 9);
@@ -223,6 +213,7 @@
             this.uploadFileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.simpleUploadToolStripMenuItem,
             this.simpleIDbasedToolStripMenuItem,
+            this.uploadAsLargeFileToolStripMenuItem,
             this.toolStripMenuItem2,
             this.createFolderToolStripMenuItem});
             this.uploadFileToolStripMenuItem.Name = "uploadFileToolStripMenuItem";
@@ -280,6 +271,29 @@
             this.goToAppFolderToolStripMenuItem.Visible = false;
             this.goToAppFolderToolStripMenuItem.Click += new System.EventHandler(this.goToAppFolderToolStripMenuItem_Click);
             // 
+            // selectedItemToolStripMenuItem
+            // 
+            this.selectedItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkOutToolStripMenuItem,
+            this.checkInToolStripMenuItem});
+            this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
+            this.selectedItemToolStripMenuItem.Size = new System.Drawing.Size(135, 29);
+            this.selectedItemToolStripMenuItem.Text = "&Selected Item";
+            // 
+            // checkOutToolStripMenuItem
+            // 
+            this.checkOutToolStripMenuItem.Name = "checkOutToolStripMenuItem";
+            this.checkOutToolStripMenuItem.Size = new System.Drawing.Size(196, 34);
+            this.checkOutToolStripMenuItem.Text = "Check &Out";
+            this.checkOutToolStripMenuItem.Click += new System.EventHandler(this.checkOutToolStripMenuItem_Click);
+            // 
+            // checkInToolStripMenuItem
+            // 
+            this.checkInToolStripMenuItem.Name = "checkInToolStripMenuItem";
+            this.checkInToolStripMenuItem.Size = new System.Drawing.Size(196, 34);
+            this.checkInToolStripMenuItem.Text = "Check &In";
+            this.checkInToolStripMenuItem.Click += new System.EventHandler(this.checkInToolStripMenuItem_Click);
+            // 
             // signInAadToolStripMenuItem
             // 
             this.signInAadToolStripMenuItem.Name = "signInAadToolStripMenuItem";
@@ -305,28 +319,23 @@
             this.uploadToOneDriveToolStripMenuItem.Name = "uploadToOneDriveToolStripMenuItem";
             this.uploadToOneDriveToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // selectedItemToolStripMenuItem
+            // uploadAsLargeFileToolStripMenuItem
             // 
-            this.selectedItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkOutToolStripMenuItem,
-            this.checkInToolStripMenuItem});
-            this.selectedItemToolStripMenuItem.Name = "selectedItemToolStripMenuItem";
-            this.selectedItemToolStripMenuItem.Size = new System.Drawing.Size(135, 29);
-            this.selectedItemToolStripMenuItem.Text = "&Selected Item";
+            this.uploadAsLargeFileToolStripMenuItem.Name = "uploadAsLargeFileToolStripMenuItem";
+            this.uploadAsLargeFileToolStripMenuItem.Size = new System.Drawing.Size(274, 34);
+            this.uploadAsLargeFileToolStripMenuItem.Text = "Upload as Large File";
+            this.uploadAsLargeFileToolStripMenuItem.Click += new System.EventHandler(this.uploadAsLargeFileToolStripMenuItem_Click);
             // 
-            // checkOutToolStripMenuItem
+            // objectBrowser
             // 
-            this.checkOutToolStripMenuItem.Name = "checkOutToolStripMenuItem";
-            this.checkOutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.checkOutToolStripMenuItem.Text = "Check &Out";
-            this.checkOutToolStripMenuItem.Click += new System.EventHandler(this.checkOutToolStripMenuItem_Click);
-            // 
-            // checkInToolStripMenuItem
-            // 
-            this.checkInToolStripMenuItem.Name = "checkInToolStripMenuItem";
-            this.checkInToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.checkInToolStripMenuItem.Text = "Check &In";
-            this.checkInToolStripMenuItem.Click += new System.EventHandler(this.checkInToolStripMenuItem_Click);
+            this.objectBrowser.DisplayFormat = OneDriveApiBrowser.PropertyDisplayFormat.TreeNode;
+            this.objectBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.objectBrowser.Location = new System.Drawing.Point(0, 0);
+            this.objectBrowser.Name = "objectBrowser";
+            this.objectBrowser.Padding = new System.Windows.Forms.Padding(0, 9, 0, 0);
+            this.objectBrowser.SelectedItem = null;
+            this.objectBrowser.Size = new System.Drawing.Size(478, 691);
+            this.objectBrowser.TabIndex = 0;
             // 
             // FormBrowser
             // 
@@ -385,6 +394,7 @@
         private System.Windows.Forms.ToolStripMenuItem selectedItemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkOutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkInToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uploadAsLargeFileToolStripMenuItem;
     }
 }
 

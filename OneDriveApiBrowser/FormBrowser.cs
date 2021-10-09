@@ -24,8 +24,6 @@ namespace OneDriveApiBrowser
             Business
         }
 
-        private const int UploadChunkSize = 10 * 1024 * 1024;       // 10 MB
-        //private IOneDriveClient oneDriveClient { get; set; }
         private GraphServiceClient graphClient { get; set; }
         private ClientType clientType { get; set; }
         private DriveItem CurrentFolder { get; set; }
@@ -354,15 +352,10 @@ namespace OneDriveApiBrowser
                         ? ""
                         : targetFolder.ParentReference.Path.Remove(0, 12) + "/" + Uri.EscapeUriString(targetFolder.Name);
                     var uploadPath = folderPath + "/" + Uri.EscapeUriString(System.IO.Path.GetFileName(filename));
-
                     try
                     {
-                        var uploadedItem =
-                            await
-                                this.graphClient.Drive.Root.ItemWithPath(uploadPath).Content.Request().PutAsync<DriveItem>(stream);
-
+                        var uploadedItem = await this.graphClient.Drive.Root.ItemWithPath(uploadPath).Content.Request().PutAsync<DriveItem>(stream);
                         AddItemToFolderContents(uploadedItem);
-
                         MessageBox.Show("Uploaded with ID: " + uploadedItem.Id);
                     }
                     catch (Exception exception)
@@ -564,6 +557,96 @@ namespace OneDriveApiBrowser
                 {
                     MessageBox.Show("Unexpected error: " + ex.Message);
                 });
+            }
+        }
+
+        private async void uploadAsLargeFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DriveItem targetFolder = this.CurrentFolder;
+
+            string filename;
+            using (var stream = GetFileStreamForUpload(targetFolder.Name, out filename))
+            {
+                if (stream != null)
+                {
+                    try
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() =>
+                        {
+                            progressBar1.Visible = true;
+                            progressBar1.Style = ProgressBarStyle.Continuous;
+                        });
+                        
+                        // Use properties to specify the conflict behavior
+                        // in this case, replace
+                        DriveItemUploadableProperties uploadProps = new DriveItemUploadableProperties
+                        {
+                            ODataType = null,
+                            AdditionalData = new Dictionary<string, object>
+                            {
+                                { "@microsoft.graph.conflictBehavior", "replace" }
+                            }
+                        };
+
+                        // Create the upload session
+                        // itemPath does not need to be a path to an existing item
+                        UploadSession uploadSession = await graphClient.Me.Drive.Items[targetFolder.Id]
+                            .ItemWithPath(filename)
+                            .CreateUploadSession(uploadProps)
+                            .Request()
+                            .PostAsync();
+
+                        // Max slice size must be a multiple of 320 KiB
+                        int maxSliceSize = 320 * 1024;
+                        var fileUploadTask =
+                            new LargeFileUploadTask<DriveItem>(uploadSession, stream, maxSliceSize);
+
+                        // Create a callback that is invoked after each slice is uploaded
+                        long streamLength = stream.Length;
+                        IProgress<long> progress = new Progress<long>(prog =>
+                        {
+                            Dispatcher.CurrentDispatcher.Invoke(() =>
+                            {
+                                progressBar1.Value = (int)(prog / streamLength * 100);
+                            });
+                        });
+
+                        try
+                        {
+                            // Upload the file
+                            UploadResult<DriveItem> uploadResult = await fileUploadTask.UploadAsync(progress);
+
+                            if (uploadResult.UploadSucceeded)
+                            {
+                                AddItemToFolderContents(uploadResult.ItemResponse);
+                                // The ItemResponse object in the result represents the
+                                // created item.
+                                MessageBox.Show($"Upload complete, item ID: {uploadResult.ItemResponse.Id}");
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Upload failed");
+                            }
+                        }
+                        catch (ServiceException ex)
+                        {
+                            PresentServiceException(ex);
+                        }
+
+                    }
+                    catch (Exception exception)
+                    {
+                        PresentServiceException(exception);
+                    }
+                    finally
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() =>
+                        {
+                            progressBar1.Visible = false;
+                            progressBar1.Style = ProgressBarStyle.Marquee;
+                        });
+                    }
+                }
             }
         }
     }
