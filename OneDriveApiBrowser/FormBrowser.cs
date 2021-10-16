@@ -607,7 +607,7 @@ namespace OneDriveApiBrowser
                         {
                             Dispatcher.CurrentDispatcher.Invoke(() =>
                             {
-                                progressBar1.Value = (int)(prog / streamLength * 100);
+                                progressBar1.Value = (int)((double)prog / streamLength * 100);
                             });
                         });
 
